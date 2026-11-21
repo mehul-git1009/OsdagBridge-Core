@@ -43,6 +43,10 @@ class Database:
         Execute the SQL schema file to create (and optionally seed) the database.
         Uses executescript to safely run multi-statement SQL.
         """
+        if not os.path.isabs(schema_file) and not os.path.exists(schema_file):
+            candidate = os.path.join(os.path.dirname(__file__), schema_file)
+            if os.path.exists(candidate):
+                schema_file = candidate
         if not os.path.exists(schema_file):
             raise FileNotFoundError(f"Schema file '{schema_file}' not found")
 
